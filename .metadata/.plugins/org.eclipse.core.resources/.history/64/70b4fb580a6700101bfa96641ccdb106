@@ -1,0 +1,38 @@
+package com.vin.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.vin.dto.OrderRequest;
+import com.vin.entity.Order;
+import com.vin.entity.OrderLineItems;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class OrderService {
+
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	
+	public String placeOrder(OrderRequest orderReq) {
+		Order order = new Order();
+		order.setOrderNumber(UUID.randomUUID().toString());
+		
+		List<OrderLineItems> orderLineItems = orderReq.getOrderLineItemsDto()
+		.stream()
+		.map(oli -> modelMapper.map(oli, OrderLineItems.class)).toList();
+		
+		order.setOrderLineItems(orderLineItems);
+		
+		return "Order created successfully!";
+	}
+
+	
+}

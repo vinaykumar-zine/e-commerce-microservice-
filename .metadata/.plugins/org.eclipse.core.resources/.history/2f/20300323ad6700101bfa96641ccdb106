@@ -1,0 +1,46 @@
+package com.vin.inventory;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.vin.inventory.entity.Inventory;
+import com.vin.inventory.repository.InventoryRepository;
+
+@SpringBootApplication
+public class InventoryServiceApplication {
+
+    private final InventoryRepository inventoryRepository;
+
+    InventoryServiceApplication(InventoryRepository inventoryRepository) {
+        this.inventoryRepository = inventoryRepository;
+    }
+
+	public static void main(String[] args) {
+		SpringApplication.run(InventoryServiceApplication.class, args);
+	}
+	
+	@Bean
+	public CommandLineRunner loadData(InventoryRepository invenntoryRepository) {
+		return args -> {
+			Inventory inven = new Inventory();
+			inven.setSkuCode("iphone_13");
+			inven.setQuantity(100);
+			
+			Inventory inven1 = new Inventory();
+			inven1.setSkuCode("SamsungGalaxy_s25_ultra");
+			inven1.setQuantity(250);
+			
+			Inventory inven2 = new Inventory();
+			inven2.setSkuCode("iphone_14");
+			inven2.setQuantity(0);
+			
+			inventoryRepository.save(inven);
+			inventoryRepository.save(inven1);
+			inventoryRepository.save(inven2);
+			
+		};
+	}
+
+}

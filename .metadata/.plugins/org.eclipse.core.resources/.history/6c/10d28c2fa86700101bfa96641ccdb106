@@ -1,0 +1,5 @@
+package com.vin.inventory.entity;
+
+public class Inventory {
+
+}

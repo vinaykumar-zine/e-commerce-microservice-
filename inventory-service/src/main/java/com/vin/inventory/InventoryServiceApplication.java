@@ -1,0 +1,48 @@
+package com.vin.inventory;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.vin.inventory.entity.Inventory;
+import com.vin.inventory.repository.InventoryRepository;
+@SpringBootApplication  // Marks this class as the entry point of the Spring Boot application
+public class InventoryServiceApplication {
+
+    private final InventoryRepository inventoryRepository;
+
+    // Constructor injection for InventoryRepository
+    InventoryServiceApplication(InventoryRepository inventoryRepository) {
+        this.inventoryRepository = inventoryRepository;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryServiceApplication.class, args); // Bootstraps the application
+    }
+
+    @Bean
+    public CommandLineRunner loadData(InventoryRepository invenntoryRepository) {
+        System.out.println("data is being added in inventory!");
+        
+        // Initializes some sample inventory records on application startup
+        return args -> {
+            Inventory inven = new Inventory();
+            inven.setSkuCode("iphone_13");
+            inven.setQuantity(100);
+
+            Inventory inven1 = new Inventory();
+            inven1.setSkuCode("SamsungGalaxy_s25_ultra");
+            inven1.setQuantity(250);
+
+            Inventory inven2 = new Inventory();
+            inven2.setSkuCode("iphone_14");
+            inven2.setQuantity(0); // Out-of-stock item for testing
+
+            // Saves inventory records to the database
+            inventoryRepository.save(inven);
+            inventoryRepository.save(inven1);
+            inventoryRepository.save(inven2);
+        };
+    }
+}

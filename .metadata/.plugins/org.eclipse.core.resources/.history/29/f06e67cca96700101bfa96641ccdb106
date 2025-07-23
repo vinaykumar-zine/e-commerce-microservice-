@@ -1,0 +1,5 @@
+package com.vin.inventory.service;
+
+public class InventoryService {
+
+}

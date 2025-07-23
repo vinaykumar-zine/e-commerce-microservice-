@@ -1,0 +1,5 @@
+package com.vin.dto;
+
+public class ProductRequest {
+
+}

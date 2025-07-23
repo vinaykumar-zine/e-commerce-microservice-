@@ -1,0 +1,5 @@
+package com.vin.entity;
+
+public class Order {
+
+}

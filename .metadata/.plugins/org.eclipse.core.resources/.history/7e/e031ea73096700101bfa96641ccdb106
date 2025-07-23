@@ -1,0 +1,23 @@
+package com.vin.service;
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.vin.dto.OrderRequest;
+import com.vin.entity.Order;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class OrderService {
+
+	public String placeOrder(OrderRequest orderReq) {
+		Order order = new Order();
+		order.setOrderNumber(UUID.randomUUID().toString());
+		return "Order created successfully!";
+	}
+
+	
+}

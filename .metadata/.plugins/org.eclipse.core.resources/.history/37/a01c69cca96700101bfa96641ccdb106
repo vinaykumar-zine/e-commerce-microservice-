@@ -1,0 +1,5 @@
+package com.vin.inventory.controller;
+
+public class InventoryController {
+
+}

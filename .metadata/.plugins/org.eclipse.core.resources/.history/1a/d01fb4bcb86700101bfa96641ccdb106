@@ -1,0 +1,62 @@
+package com.vin.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+
+import com.vin.dto.OrderRequest;
+import com.vin.entity.Order;
+import com.vin.entity.OrderLineItems;
+import com.vin.repository.OrderRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
+@Service
+@Transactional
+@AllArgsConstructor
+public class OrderService {
+
+	
+	private final ModelMapper modelMapper;
+	private final OrderRepository orderRepo;
+	private final WebClient webClient;
+	
+	
+	public String placeOrder(OrderRequest orderReq) {
+		Order order = new Order();
+		order.setOrderNumber(UUID.randomUUID().toString());
+		
+		List<OrderLineItems> orderLineItems = orderReq.getOrderLineItemsDto()
+		.stream()
+		.map(oli -> modelMapper.map(oli, OrderLineItems.class)).toList();
+		
+		order.setOrderLineItems(orderLineItems);
+		
+		List<String> skuCOdes = order.getOrderLineItems().stream().map(orderLineItem -> orderLineItem.getSkuCode())
+								 .toList();
+		
+		//Call inventory service and place order if product is in stock!
+		Boolean res = webClient.get()
+								.uri("http://localhost:8082/api/inventory/", 
+										uriBuilder-> uriBuilder.queryParam("skuCode", skuCOdes).build())
+								.retrieve()
+								.bodyToMono(Boolean.class)
+								.block();
+		
+		if(res) {
+			orderRepo.save(order);			
+		}
+		else {
+			throw new IllegalStateException("Product is not in stock, please try again");
+		}
+		
+		return "Order created successfully!";
+	}
+
+	
+}

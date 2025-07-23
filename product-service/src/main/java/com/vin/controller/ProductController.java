@@ -1,0 +1,34 @@
+package com.vin.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.vin.dto.ProductRequest;
+import com.vin.service.ProductService;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping("/api/products")
+@AllArgsConstructor
+public class ProductController {
+	
+	private final ProductService productService;
+
+	//http://localhost:8081/api/products
+	@PostMapping
+	public ResponseEntity<?> createProduct(@RequestBody ProductRequest productReq){
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(productReq));
+	}
+	
+	//http://localhost:8081/api/products
+	@GetMapping
+	public ResponseEntity<?>  getAllProducts(){
+		return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
+	}
+}

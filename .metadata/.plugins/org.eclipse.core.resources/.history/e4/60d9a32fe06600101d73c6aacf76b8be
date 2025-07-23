@@ -1,0 +1,5 @@
+package com.vin.service;
+
+public class ProductService {
+
+}
