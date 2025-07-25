@@ -3,11 +3,16 @@ package com.vin.inventory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
 import com.vin.inventory.entity.Inventory;
 import com.vin.inventory.repository.InventoryRepository;
+
+
+
 @SpringBootApplication  // Marks this class as the entry point of the Spring Boot application
+@EnableDiscoveryClient
 public class InventoryServiceApplication {
 
     private final InventoryRepository inventoryRepository;

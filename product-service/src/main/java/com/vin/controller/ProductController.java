@@ -14,19 +14,19 @@ import com.vin.service.ProductService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/product")
 @AllArgsConstructor
 public class ProductController {
 	
 	private final ProductService productService;
 
-	//http://localhost:8081/api/products
+	//http://localhost:8081/api/product
 	@PostMapping
 	public ResponseEntity<?> createProduct(@RequestBody ProductRequest productReq){
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(productReq));
 	}
 	
-	//http://localhost:8081/api/products
+	//http://localhost:8081/api/product
 	@GetMapping
 	public ResponseEntity<?>  getAllProducts(){
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());

@@ -24,7 +24,7 @@ public class OrderService {
 
 	private final ModelMapper modelMapper;        // Used to convert DTOs to entity classes
 	private final OrderRepository orderRepo;      // Spring Data repository for Order persistence
-	private final WebClient webClient;            // Reactive HTTP client to call Inventory microservice
+	private final WebClient.Builder webClientBuilder;            // Reactive HTTP client to call Inventory microservice
 
 	/**
 	 * Places an order if all products are in stock by:
@@ -55,8 +55,8 @@ public class OrderService {
 
 		//Make GET request to Inventory Service with all skuCodes as query params
 		//In this way we are not sending multiple api calls for each skuCode, we are just sending only one api call!
-		InventoryRes[] inventoryResponses = webClient.get()
-		        .uri("http://localhost:8082/api/inventory",
+		InventoryRes[] inventoryResponses = webClientBuilder.build().get()
+		        .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
 				        .retrieve()
 				        .bodyToMono(InventoryRes[].class)	// Expecting an array of InventoryRes as response
